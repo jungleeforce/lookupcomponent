@@ -4,7 +4,7 @@
     <aura:attribute name="result" type="String"/>
     <aura:attribute name="uniqueId" type="String"/>
     <aura:attribute name="num" type="Integer"/>
-    <aura:attribute name="lookupId" type="Id" default="0016C000005PvgYQAS"/>
+    <aura:attribute name="lookupId" type="Id"/>
     <aura:attribute name="value" type="Object"/>
     
     ==> {!v.result} <br/>
