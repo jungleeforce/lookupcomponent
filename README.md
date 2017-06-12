@@ -1,4 +1,4 @@
-# Lookupcomponent
+# Lightning Lookupcomponent
 
 Use this lightning component in your project to enable users to select lookup record
 
