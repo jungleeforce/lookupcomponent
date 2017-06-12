@@ -1,6 +1,6 @@
 ({
   doInit: function (component, event, helper){
-	  var lookupId = component.get('v.lookupId');
+      var lookupId = component.get('v.lookupId');
       var sObjectType = component.get("v.objectName");
       var fields = component.get("v.fieldSet");
       var comparisonField = component.get("v.comparisonField");
@@ -13,13 +13,15 @@
             action.setParams({queryString : query});
             action.setCallback(this, function(response){
               var responseState = response.getState();
-              if(responseState === 'SUCCESS') { 
+              console.log('error ', response.getError()[0]);
+              if(responseState === 'SUCCESS' && response.getReturnValue() != undefined && response.getReturnValue() != null && response.getReturnValue() != '') {
                   component.set('v.selectedIndex',undefined);
                   component.set("v.searching",false);
                   component.set('v.selectedObject',response.getReturnValue()[0]);
                   component.set('v.selectedObjectDisplayName',response.getReturnValue()[0][primaryDisplayField]);
                   component.set('v.value','');
               }else {
+                  console.log('error ', response.getError());
                 component.set('v.queryErrorMessage',response.getError()[0]);
       			component.set('v.queryErrorFound',true);
               }
@@ -110,6 +112,7 @@
             if(conditions != undefined && conditions != '') {
             	query = query +" "+ conditions;      
             }
+            query += " LIMIT "+limit;
             console.log('query '+ query);
             var action = component.get("c.querySalesforceRecord");
             action.setParams({queryString : query});
