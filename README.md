@@ -2,9 +2,9 @@
 
 Use this lightning component in your project to enable users to select lookup record
 
-##Usage:
+## Usage:
 
-  ###Default:
+  ### Default:
      <c:LookupComponent objectName="Account"
 						fieldSet="['Name','Id']"
 						whereCondition=" AND ParentId = null"
