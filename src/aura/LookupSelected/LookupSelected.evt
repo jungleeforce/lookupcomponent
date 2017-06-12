@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Event template" >
+    <aura:attribute name="selectedObject" type="Object"/>
+    <aura:attribute name="uniqueLookupIdentifier" type="String"/>
+</aura:event>

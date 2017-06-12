@@ -1,0 +1,128 @@
+<aura:component implements="force:appHostable" controller="Lookupcontroller" access="GLOBAL">
+
+  <aura:attribute name="objectList" type="Object[]" default="[]" description="This is the list of record that are shown in the dropdown when a user enters a text."/>
+  <aura:attribute name="objectName" type="String" description="The API name of the object from which you wish to query."/>
+  <aura:attribute name="fieldSet"   type="String[]" description="The fields that will be queried."/>
+  <aura:attribute name="whereCondition" type="String" description="The component already filters the record based on the user entered text. But you can add more filters."/>
+  <aura:attribute name="limit" type="Integer" default="5" description="The number of records that will be queried. Set this as less as possible for better performance."/>
+  <aura:attribute name="searching" type="Boolean"/>
+  <aura:attribute name="comparisonField" type="String" description="Mention the API name of the field which will be used to compare when the query runs"/>
+  <aura:attribute name="primaryDisplayField" type="String" description="Component allows displaying of more than one field. Mention the API field name which will be displayed."/>
+  <aura:attribute name="alternateDisplayField" type="String[]" description="Display the secondary set of fields. Keep it less than two."/>
+  <aura:attribute name="enteredValue" type="String"/>
+  <aura:attribute name="minimumCharacter" type="Integer" default="3" description="The minimum number of character after which the search should be performed. Keep it to more than 3"/>
+  <aura:attribute name="selectedIndex" type="Integer"/>
+  <aura:attribute name="lookupInputFocused" type="Boolean" default="false"/>
+  <aura:attribute name="selectedObject" type="Object"/>
+  <aura:attribute name="lightningIconName" type="String" description="The lightning icon name, that will be displayed in the dropdown. It will be in the form of utility:search"/>
+  <aura:attribute name="selectedObjectDisplayName" type="String"/>
+  <aura:attribute name="placeholder" type="String" default="Search" description="placeholder"/>
+  <aura:attribute name="lookupId" type="String" description="Set this to the id of the record that is looked up. Based on this the data will be loaded on further loading of the page."/>
+  <aura:attribute name="value" type="Object" description="This will be set to the value of the selected object.You can access this from your component"/>
+  <aura:attribute name="readOnly" type="Boolean" description="Set this to true if you want to make the field readonly"/>
+  <aura:attribute name="fieldLabel" type="String" description="Label of the field."/>
+  <aura:attribute name="required" type="Boolean" description="Set this to true if you want the field to be required."/>
+  <aura:attribute name="requiredErrorMessage" type="String" description="Set the message that will be displayed if the field is left blank."/>
+  <aura:attribute name="uniqueLookupIdentifier" required="true" default="" type="String" description="Please make sure that this is set to some unique string. This will be sent in the event params whenever a value is selected in the dropdown"/>
+  <aura:attribute name="queryErrorMessage" type="String" description=""/>
+  <aura:attribute name="queryErrorFound" type="Boolean" description=""/>  
+  
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  
+  <!--Registering events -->
+  <aura:registerEvent name="lookupSelected" type="c:LookupSelected"/>
+  <aura:registerEvent name="selectedLookupRemoved" type="c:LookupSelected"/>
+    
+    <div class="slds-form-element">
+      <label class="slds-form-element__label" for="combobox-unique-id">
+          {!v.fieldLabel}
+      </label>
+      <div class="{!(v.selectedObject == undefined &amp;&amp; v.lookupInputFocused == false &amp;&amp; v.required==true) ? 'slds-form-element__control slds-has-error' : 'slds-form-element__control'}">
+        <div class="slds-combobox_container slds-has-inline-listbox">
+          <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" style="{!v.selectedObjectDisplayName == undefined || v.selectedObjectDisplayName == '' ? '' : 'display:none;'}">
+                <ui:inputText disabled="{!v.readOnly}" aura:id="lookUpInputElement" value="{!v.enteredValue}"  class="slds-input slds-combobox__input" updateOn="keyup" keyup="{!c.searchRecords}" blur="{!c.inputBlurred}" focus="{!c.inputInFocus}" placeholder="{!v.placeholder}"/>
+                <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right" title="Description of icon when needed">
+                  <lightning:icon iconName="utility:search" size="x-small"/>
+                  <span class="slds-assistive-text">Description of icon</span>
+              </span>
+            </div>
+            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right" style="{!v.selectedObjectDisplayName != undefined &amp;&amp; v.selectedObjectDisplayName != '' ? 'padding:4px;' : 'display:none;'}">
+              <span class="slds-icon_container slds-combobox__input-entity-icon">
+                <lightning:icon iconName="{!v.lightningIconName}" size="x-small"/>
+                <span class="slds-assistive-text"></span>
+              </span>
+              <input type="text" class="slds-input slds-combobox__input" id="combobox-unique-id" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="Search Salesforce" disabled="true" value="{!v.selectedObjectDisplayName}"/>
+              <aura:if isTrue="{!!v.readOnly}">
+                  <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" onclick="{!c.removeSelectedOption}">
+                    <lightning:icon iconName="utility:close" size="x-small"/>
+                    <span class="slds-assistive-text">Remove selected option</span>
+                  </button>
+              </aura:if>
+            </div>
+            <aura:if isTrue="{!v.objectList.length >0 }">
+              <div id="listbox-unique-id" role="listbox">
+                <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
+                  <aura:iteration items="{!v.objectList}" var="obj" indexVar="ind">
+                    <li role="presentation" class="{!v.selectedIndex == ind ? 'slds-listbox__item slds-has-focus highlightDark' : 'slds-listbox__item slds-has-focus'}" data-current-index="{!ind}" onclick="{!c.onRowSelected}" onmouseover="{!c.showColorOnMouseEnter}" onmouseout="{!c.hideColorOnMouseLeave}">
+                      <span class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta " role="option">
+                        <span class="slds-media__figure" style="{!v.lightningIconName != undefiend &amp;&amp; !v.lightningIconName != '' ? '' : 'display:none;'}">
+                          <span class="slds-icon_container slds-icon-standard-account" title="Description of icon when needed">
+                            <lightning:icon iconName="{!v.lightningIconName}" size="small"/>
+                            <span class="slds-assistive-text">Description of icon</span>
+                          </span>
+                        </span>
+                        <span class="slds-media__body">
+                            <c:LookupComponent_DataRecord object="{!obj}" fieldName="{!v.primaryDisplayField}" alternateFieldList="{!v.alternateDisplayField}"/>
+                        </span>
+                      </span>
+                    </li>
+                    <aura:if isTrue="{!ind != (v.objectList.length-1)}">
+                      <hr class="hrStyle"/>
+                    </aura:if>
+                  </aura:iteration>
+                </ul>
+              </div>
+            </aura:if>
+            <aura:if isTrue="{!v.objectList.length == 0 &amp;&amp; v.enteredValue != undefined &amp;&amp;  v.enteredValue != '' &amp;&amp;  v.enteredValue.length gt 0  &amp;&amp; v.lookupInputFocused}">
+              <div id="listbox-unique-id" role="listbox">
+                <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
+                  <li role="presentation" class="slds-listbox__item">
+                    <span class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+                      <span class="slds-media__body" style="{!!v.searching &amp;&amp; !v.queryErrorFound ? '' : 'display:none;'}">
+                          <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                            <center>
+                              <b>No Records Found</b>
+                              <span style="{!v.enteredValue != undefined &amp;&amp;  v.enteredValue != '' &amp;&amp;  v.enteredValue.length lt v.minimumCharacter ? '' : 'display:none;'}">(enter at least {!v.minimumCharacter} char)</span>
+                            </center>
+                          </span>
+                      </span>
+                      <span class="slds-media__body" style="{!!v.searching ? 'display:none' : ''}">
+                        <center>
+                          <div class="demo-only" style="height:1rem;">
+                            <div role="status" class="slds-spinner slds-spinner_small">
+                              <span class="slds-assistive-text">Loading</span>
+                              <div class="slds-spinner__dot-a"></div>
+                              <div class="slds-spinner__dot-b"></div>
+                            </div>
+                          </div>
+                        </center>
+                      </span>
+                      <span class="slds-media__body" style="{! v.queryErrorFound ? '' : 'display:none;'}">
+                        <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                            <center>
+                              <b>Error in Query: {!v.queryErrorMessage}</b>
+                            </center>
+                          </span>
+                      </span>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </aura:if>
+          </div>
+        </div>
+          <div id="error-message" class="slds-form-element__help" style="{!(v.selectedObject == undefined &amp;&amp; v.lookupInputFocused == false &amp;&amp; v.required==true) ? 'display:block;' : 'display:none;'}"> &nbsp;&nbsp;{!v.requiredErrorMessage}</div>
+      </div>
+    </div>
+</aura:component>

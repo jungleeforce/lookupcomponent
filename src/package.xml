@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Lookupcontroller</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>LookupSelected</members>
+        <members>LookupComponent</members>
+        <members>LookupComponentApplication</members>
+        <members>LookupComponent_DataRecord</members>
+        <members>selectedLookupRemoved</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <version>38.0</version>
+</Package>

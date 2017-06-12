@@ -1,0 +1,15 @@
+<aura:component >
+  <aura:attribute name="object" type="Object"/>
+  <aura:attribute name="fieldName" type="String"/>
+  <aura:attribute name="alternateFieldList" type="String[]"/>
+  <aura:attribute name="alternateFieldValueList" type="String[]"/>
+  <aura:attribute name="recordDisplayName" type="String"/>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <span class="slds-listbox__option-text slds-listbox__option-text_entity">&nbsp;&nbsp;<b>{!v.recordDisplayName}</b></span>
+    <span class="slds-listbox__option-meta slds-listbox__option-meta_entity secondaryFieldDisplay" style="color:#787878;">&nbsp;
+      <aura:iteration items="{!v.alternateFieldValueList}" var="secondaryFieldValues" indexVar="ind">
+        <aura:if isTrue="{!ind != 0}"> • </aura:if>
+        {!secondaryFieldValues}
+      </aura:iteration>
+    </span>
+</aura:component>

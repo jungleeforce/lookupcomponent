@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="This event will be fired when the selected lookup is cancelled by clicking the x button on the lookup">
+	<aura:attribute name="uniqueLookupIdentifier" type="String"/>
+    <aura:attribute name="selectedObject" type="Object"/>
+</aura:event>
