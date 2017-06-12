@@ -1,4 +1,4 @@
-# Lightning Lookupcomponent
+# Lookupcomponent
 
 Use this lightning component in your project to enable users to select lookup record
 
@@ -21,6 +21,14 @@ Use this lightning component in your project to enable users to select lookup re
 |alternateDisplayField|String[]|Display the secondary set of fields.Usually keep it to 2. E.g., `alternateDisplayField="['Status__c','OracleId__c']"`|
 |minimumCharacter|Integer|The minimum number of character after which the search should be performed. Keep it to more than 3|
 
+### Event
+
+|Name|Invocation | Params|
+|----|-----------|-------|
+|LookupSelected|This event will be fired when the look up value is selected in the dropdown.|`{
+                "selectedObject" : _selected object in the dropdown_,
+                "uniqueLookupIdentifier" : _the unique lookup component id_               
+            }`|
 
 ### Usage:
 	
