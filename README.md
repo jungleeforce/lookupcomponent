@@ -34,8 +34,36 @@ Use this lightning component in your project to enable users to select lookup re
 			  alternateDisplayField="['Name','Id']"
 			  lightningIconName="standard:account"
 			  uniqueLookupIdentifier="testAccount"
-			  lookupId="{!v.lookupId}"
+			  lookupId="{!v.Opportunity.AccountId}"
 			  fieldLabel="Customer"
      />
 	 
- #### Readonly Mode
+ #### Readonly Mode:
+    <c:LookupComponent objectName="Account"
+			  fieldSet="['Name','Id']"
+			  whereCondition=" AND ParentId = null"
+			  limit="5"
+			  comparisonField="Name"
+			  primaryDisplayField="Name"
+			  alternateDisplayField="['Name','Id']"
+			  lightningIconName="standard:account"
+			  uniqueLookupIdentifier="testAccount"
+			  lookupId="{!v.Opportunity.AccountId}"
+			  fieldLabel="Customer"
+			  readOnly="true"
+     />
+  #### Required Mode:
+  <c:LookupComponent objectName="Account"
+			  fieldSet="['Name','Id']"
+			  whereCondition=" AND ParentId = null"
+			  limit="5"
+			  comparisonField="Name"
+			  primaryDisplayField="Name"
+			  alternateDisplayField="['Name','Id']"
+			  lightningIconName="standard:account"
+			  uniqueLookupIdentifier="testAccount"
+			  lookupId="{!v.Opportunity.AccountId}"
+			  fieldLabel="Customer"
+			  required="true"
+			  requiredErrorMessage="Customer is mandatory"
+     />
