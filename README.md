@@ -25,10 +25,7 @@ Use this lightning component in your project to enable users to select lookup re
 
 |Name|Invocation | Params|
 |----|-----------|-------|
-|LookupSelected|This event will be fired when the look up value is selected in the dropdown.|`{
-                "selectedObject" : _selected object in the dropdown_,
-                "uniqueLookupIdentifier" : _the unique lookup component id_               
-            }`|
+|LookupSelected|This event will be fired when the look up value is selected in the dropdown.|`{"selectedObject" : _selected object in the dropdown_,"uniqueLookupIdentifier" : _the unique lookup component id_}`|
 
 ### Usage:
 	
