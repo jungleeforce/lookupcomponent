@@ -2,6 +2,8 @@
 
 Use this lightning component in your project to enable users to select lookup record
 
+![Giffy](https://media.giphy.com/media/oUmpayMWuslNe/giphy.gif)
+
 ### Properties
 
 | Name     					| Type    			| Description 											|
