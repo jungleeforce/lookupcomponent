@@ -6,7 +6,7 @@ Use this lightning component in your project to enable users to select lookup re
 
 | Name     					| Type    			| Description 											|
 | --------------------------|-------------------|-------------------------------------------------------|
-| lookupId  | Id   | Set this to the id of the record that is looked up. Based on this the data will be loaded on further loading of the page. E.g., lookupId ="{!v.Contact.AccountId}"    |
+| lookupId  | Id   | Set this to the id of the record that is looked up. Based on this the data will be loaded on further loading of the page. E.g., lookupId ="`{!v.Contact.AccountId}`"    |
 | uniqueLookupIdentifier | String | Please make sure that this is set to some unique string. This will be sent in the event params whenever a value is selected in the dropdown.    |
 |required|Boolean|Set this to true if you want the field to be required.|
 |requiredErrorMessage| String| The error message if the field is left blank|
