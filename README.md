@@ -18,7 +18,7 @@ Use this lightning component in your project to enable users to select lookup re
 |fieldSet|Array|The fields that will be queried.|
 |whereCondition|String|The component already filters the record based on the user entered text. But you can add more filters. Do not add 'Where' just add the condition like `AND Parent=Null AND Status='Approved'`|
 |limit|Integer|The number of records that will be queried. Set this as less as possible for better performance.|
-|comparisonField|String|Mention the API name of the field which will be used to compare when the query runs|
+|comparisonField|String[]|Mention the API name of the fields which will be used to compare when the query runs|
 |primaryDisplayField|String|Component allows displaying of more than one field. Mention the API field name which will be displayed.|
 |alternateDisplayField|String[]|Display the secondary set of fields.Usually keep it to 2. E.g., `alternateDisplayField="['Status__c','OracleId__c']"`|
 |minimumCharacter|Integer|The minimum number of character after which the search should be performed. Keep it to more than 3|
