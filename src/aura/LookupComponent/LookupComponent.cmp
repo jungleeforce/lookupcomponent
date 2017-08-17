@@ -60,7 +60,7 @@
                   </button>
               </aura:if>
             </div>
-            <aura:if isTrue="{!v.objectList.length >0 }">
+            <aura:if isTrue="{!v.objectList.length >0 &amp;&amp; v.lookupInputFocused}">
               <div id="listbox-unique-id" role="listbox">
                 <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
                   <aura:iteration items="{!v.objectList}" var="obj" indexVar="ind">
