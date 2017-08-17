@@ -6,7 +6,7 @@
   <aura:attribute name="whereCondition" type="String" description="The component already filters the record based on the user entered text. But you can add more filters."/>
   <aura:attribute name="limit" type="Integer" default="5" description="The number of records that will be queried. Set this as less as possible for better performance."/>
   <aura:attribute name="searching" type="Boolean"/>
-  <aura:attribute name="comparisonField" type="String" description="Mention the API name of the field which will be used to compare when the query runs"/>
+  <aura:attribute name="comparisonField" type="String[]" description="Mention the API name of the fields which will be used to compare when the query runs"/>
   <aura:attribute name="primaryDisplayField" type="String" description="Component allows displaying of more than one field. Mention the API field name which will be displayed."/>
   <aura:attribute name="alternateDisplayField" type="String[]" description="Display the secondary set of fields. Keep it less than two."/>
   <aura:attribute name="enteredValue" type="String"/>
@@ -122,7 +122,7 @@
             </aura:if>
           </div>
         </div>
-          <div id="error-message" class="slds-form-element__help" style="{!(v.selectedObject == undefined &amp;&amp; v.lookupInputFocused == false &amp;&amp; v.required==true) ? 'display:block;' : 'display:none;'}"> &nbsp;&nbsp;{!v.requiredErrorMessage}</div>
+        <div id="error-message" class="slds-form-element__help" style="{!(v.selectedObject == undefined &amp;&amp; v.lookupInputFocused == false &amp;&amp; v.required==true) ? 'display:block;' : 'display:none;'}"> &nbsp;&nbsp;{!v.requiredErrorMessage}</div>
       </div>
     </div>
 </aura:component>
