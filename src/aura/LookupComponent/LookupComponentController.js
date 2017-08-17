@@ -1,12 +1,14 @@
 ({
   doInit: function (component, event, helper){
-      var lookupId = component.get('v.lookupId');
+	  var lookupId = component.get('v.lookupId');
       var sObjectType = component.get("v.objectName");
       var fields = component.get("v.fieldSet");
       var comparisonField = component.get("v.comparisonField");
       var primaryDisplayField = component.get("v.primaryDisplayField");
       component.set('v.queryErrorMessage','');
       component.set('v.queryErrorFound',false);
+      component.set('v.lookupInputFocused',false);
+      
       if(lookupId != undefined && lookupId != '' && lookupId != null) {
           var query = "SELECT "+fields.join(",")+" FROM "+sObjectType+" WHERE Id='"+lookupId+"'";
           var action = component.get("c.querySalesforceRecord");
@@ -108,7 +110,13 @@
           if(userEnteredValue.length >= minimumCharacter) {
             component.set("v.searching",true);
             component.set('v.objectList',[]);
-            var query = "SELECT "+fields.join(",")+" FROM "+sObjectType+" WHERE "+comparisonField+" LIKE '%"+userEnteredValue+"%'";
+            //iterate thru the comparision Field.
+            var comparisionStringArray=[];
+            for(var i = 0;i<comparisonField.length;i++) {
+            	comparisionStringArray.push(comparisonField[i]+" LIKE '%"+userEnteredValue+"%'");
+            }
+            var comparisionString = comparisionStringArray.join(' OR ');
+            var query = "SELECT "+fields.join(",")+" FROM "+sObjectType+" WHERE ("+comparisionString+")";
             if(conditions != undefined && conditions != '') {
             	query = query +" "+ conditions;      
             }
