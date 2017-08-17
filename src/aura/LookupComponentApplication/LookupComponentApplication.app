@@ -13,9 +13,9 @@
     
     <c:LookupComponent objectName="Account"
                             fieldSet="['Name','Id']"
-                            whereCondition=" AND Parent__c.Id = null"
+                            whereCondition="AND ParentId = null"
                             limit="5"
-                            comparisonField="Name"
+                            comparisonField="['Name','Phone']"
                             primaryDisplayField="Name"
                             alternateDisplayField="['Name','Id']"
                             minimumCharacter="3"
