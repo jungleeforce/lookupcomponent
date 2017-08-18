@@ -157,7 +157,12 @@
     $A.util.removeClass( event.currentTarget, 'highlight');
   },
   inputBlurred : function(component, event, helper) {
-    component.set('v.lookupInputFocused',false);
+    //component.set('v.lookupInputFocused',false);
+    //delaying the setting of this flag. This is to make sure that the flag is set post the selection of the dropdown. 
+    window.setTimeout(
+      $A.getCallback(function() {
+        component.set('v.lookupInputFocused',false);
+    }), 200);
   },
   inputInFocus : function(component, event, helper) {
     component.set('v.lookupInputFocused',true);
